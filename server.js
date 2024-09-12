@@ -1,8 +1,13 @@
 // Importando o framework express 
-import express from 'express'
+import express from 'express';
+// Importando o prisma 
+import { PrismaClient } from '@prisma/client';
 
 // Criando uma instância do express
 const app = express();
+
+// Crianod uma instância do prisma
+const prisma = new PrismaClient();
 
 // Possibilita o uso do JSON
 app.use(express.json())
@@ -19,10 +24,18 @@ app.get('/users', (req, res) => {
     res.status(200).json(users);
 })
 
-app.post('/users', (req, res) => {
-    users.push(req.body); // => adiciona um novo usuário ao array de users
+app.post('/users', async (req, res) => {
+    // criando um novo usuário no db
+    await prisma.user.create({
+        data: {
+            name: req.body.name,
+            email: req.body.email,
+            age: req.body.age,
+            password: req.body.password
+        }
+    })
 
-    // Envia um status de criação, e retorna o usuário criado
+    // enviando uma resposta
     res.status(201).json(req.body);
 })
 

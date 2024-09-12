@@ -10,11 +10,30 @@ const app = express();
 const prisma = new PrismaClient();
 
 // Possibilita o uso do JSON
-app.use(express.json())
+app.use(express.json());
 
 app.get('/users', async (req, res) => {
-    // busca todos os usuários do db
-    const users = await prisma.user.findMany();
+
+    let users = [];
+
+    // desestruturando o obj req.query
+    const { name, email, age } = req.query;
+
+    const query = {}; // iniciando um obj vazio para criar a consulta
+
+    if (name) query.name = name;
+    if (email) query.email = email;
+    if (age) {
+        const parsedAge = parseInt(age);
+        if (isNaN(parsedAge)) {
+            return res.status(400).json({ erro: "Idade inválida fornecuda." });
+        }
+        query.age = parsedAge;
+    }
+
+    users = await prisma.user.findMany({
+        where: query
+    });
 
     res.status(200).json(users);
 })

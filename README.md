@@ -75,6 +75,3 @@ Este repositório contém uma aplicação de servidor Node.js usando Express e P
     - Parâmetros: `id` (ID do usuário)
 - **Resposta**:
     - Status: `200 OK`
-
-## Licença
-Este projeto está licenciado sob a Licença MIT.

@@ -12,14 +12,9 @@ const prisma = new PrismaClient();
 // Possibilita o uso do JSON
 app.use(express.json())
 
-const users = [];
-
-app.get('/users', (req, res) => {
-    // Verifica se existe usuários cadastrados
-    if (users.length === 0) {
-        console.log('Nenhum usuário encontrado');
-        return res.status(404).json({message: "Nenhum usuário encontrado"});
-    }
+app.get('/users', async (req, res) => {
+    // busca todos os usuários do db
+    const users = await prisma.user.findMany();
 
     res.status(200).json(users);
 })

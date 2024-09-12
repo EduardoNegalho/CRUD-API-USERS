@@ -34,6 +34,22 @@ app.post('/users', async (req, res) => {
     res.status(201).json(req.body);
 })
 
+app.put('/users/:id', async (req, res) => {
+    // atualizando os dados do user
+    await prisma.user.update({
+        where: {
+            id: req.params.id
+        },
+        data: {
+            name: req.body.name,
+            email: req.body.email,
+            age: req.body.age,
+            password: req.body.password
+        }
+    })
+
+    res.status(200).json(req.body);
+})
 
 // Inicia a aplicação na porta 3000, essa informação sempre deve está no final
 app.listen(3000);

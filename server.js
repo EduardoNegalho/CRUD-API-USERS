@@ -51,5 +51,16 @@ app.put('/users/:id', async (req, res) => {
     res.status(200).json(req.body);
 })
 
+app.delete('/users/:id', async (req, res) => {
+    // excluindo um user do db
+    await prisma.user.delete({
+        where: {
+            id: req.params.id
+        }
+    })
+
+    res.status(200).json({ messege: 'Usuário deletado com sucesso.' });
+})
+
 // Inicia a aplicação na porta 3000, essa informação sempre deve está no final
 app.listen(3000);

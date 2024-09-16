@@ -2,6 +2,7 @@
 import express from 'express';
 // Importando o prisma 
 import { PrismaClient } from '@prisma/client';
+import cors from 'cors'
 
 // Criando uma instância do express
 const app = express();
@@ -11,6 +12,7 @@ const prisma = new PrismaClient();
 
 // Possibilita o uso do JSON
 app.use(express.json());
+app.use(cors());
 
 app.get('/users', async (req, res) => {
 
@@ -80,6 +82,27 @@ app.delete('/users/:id', async (req, res) => {
 
     res.status(200).json({ messege: 'Usuário deletado com sucesso.' });
 })
+
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                email: email,
+                password: password
+            }
+        });
+
+        if (!user) {
+            return res.status(401).json({ success: false, error: 'Email ou senha inválida' });
+        }
+
+        res.status(200).json({ success: true, user });
+    } catch (error) {
+        res.status(500).json({ success: false, error: 'Erro interno' });
+    }
+});
 
 // Inicia a aplicação na porta 3000, essa informação sempre deve está no final
 app.listen(3000);

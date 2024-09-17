@@ -75,3 +75,17 @@ Este repositório contém uma aplicação de servidor Node.js usando Express e P
     - Parâmetros: `id` (ID do usuário)
 - **Resposta**:
     - Status: `200 OK`
+
+### POST /login
+- **Descrição**: Endpoint para login de user.
+- **Requisição**:
+    - Corpo: 
+        ```json
+        {
+            "email": "john.doe@example.com",
+            "password": "securepassword"
+        }
+        ```
+- **Resposta**:
+    - Status: `200 Created`
+    - Corpo: O objeto do usuário verificado.

@@ -1,0 +1,12 @@
+html, body {
+    height: 100%;
+}
+
+.form-container {
+    max-width: 30rem;
+    max-height: 30rem;
+}
+
+.link {
+    text-decoration: none;
+}

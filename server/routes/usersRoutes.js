@@ -4,17 +4,17 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import cors from 'cors'
 
-// Criando uma instância do express
-const app = express();
+// Criando uma instância do express router
+const router = express.Router();
 
 // Crianod uma instância do prisma
 const prisma = new PrismaClient();
 
 // Possibilita o uso do JSON
-app.use(express.json());
-app.use(cors());
+router.use(express.json());
+router.use(cors());
 
-app.get('/users', async (req, res) => {
+router.get('/users', async (req, res) => {
 
     let users = [];
 
@@ -40,7 +40,7 @@ app.get('/users', async (req, res) => {
     res.status(200).json(users);
 })
 
-app.post('/users', async (req, res) => {
+router.post('/users', async (req, res) => {
     // criando um novo usuário no db
     await prisma.user.create({
         data: {
@@ -55,7 +55,7 @@ app.post('/users', async (req, res) => {
     res.status(201).json(req.body);
 })
 
-app.put('/users/:id', async (req, res) => {
+router.put('/users/:id', async (req, res) => {
     // atualizando os dados do user
     await prisma.user.update({
         where: {
@@ -72,7 +72,7 @@ app.put('/users/:id', async (req, res) => {
     res.status(200).json(req.body);
 })
 
-app.delete('/users/:id', async (req, res) => {
+router.delete('/users/:id', async (req, res) => {
     // excluindo um user do db
     await prisma.user.delete({
         where: {
@@ -83,7 +83,7 @@ app.delete('/users/:id', async (req, res) => {
     res.status(200).json({ messege: 'Usuário deletado com sucesso.' });
 })
 
-app.post('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
@@ -104,5 +104,4 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// Inicia a aplicação na porta 3000, essa informação sempre deve está no final
-app.listen(3000);
+export default router;
